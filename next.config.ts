@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'digitallyvibe.com',
       },
+       {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

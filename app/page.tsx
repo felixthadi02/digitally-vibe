@@ -9,7 +9,7 @@ import Contact from '@/components/home/Contact';
 import Footer from '@/components/Global/Footer';
 export default function Home() {
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-auto">
       <Navbar />
       <Hero />
       <Services />

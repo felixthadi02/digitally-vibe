@@ -296,7 +296,7 @@ const Services: React.FC = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              ref={(el) => (cardsRef.current[index] = el)}
+              // ref={(el) => (cardsRef.current[index] = el)}
               className="group p-8 rounded-2xl bg-white border-2 border-gray-100 hover:border-[#ff3233] transition-all duration-500 hover:shadow-2xl cursor-pointer"
             >
               <div

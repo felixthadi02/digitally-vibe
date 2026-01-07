@@ -62,3 +62,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #e02d2e;
 }
+
+.dotted-line {
+  border-top: 2px dotted #e0e0e0;
+}
+
+/* Fade mask gradient */
+.fade-mask {
+  background: linear-gradient(to top, #fff 20%, transparent 100%);
+}
