@@ -119,7 +119,7 @@ const Services = () => {
           {services.map((service, index) => (
             <div
               key={service.id}
-              ref={(el) => (cardsRef.current[index] = el)}
+              // ref={(el) => (cardsRef.current[index] = el)}
               className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
             >
               {/* Image */}

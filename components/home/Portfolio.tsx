@@ -121,7 +121,7 @@ const Portfolio = () => {
           {filteredProjects.map((project, index) => (
             <div
               key={project.id}
-              ref={(el) => (cardsRef.current[index] = el)}
+              // ref={(el) => (cardsRef.current[index] = el)}
               className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
             >
               <div className="relative h-64 overflow-hidden">
