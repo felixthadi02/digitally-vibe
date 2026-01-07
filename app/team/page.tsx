@@ -10,7 +10,8 @@ import {
   ArrowLeft,
   ArrowRight
 } from "lucide-react";
-
+import abhi from '@/public/abhi.webp';
+import veeresh from '@/public/veeresh.webp';
 interface TeamMember {
   id: number;
   name: string;
@@ -24,14 +25,14 @@ const teamMembers: TeamMember[] = [
     id: 1,
     name: "Alex Johnson",
     role: "Frontend Developer",
-    image: "https://i.pravatar.cc/300?img=13",
+    image: abhi.src,
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
   },
   {
     id: 2,
     name: "Sarah Williams",
     role: "Product Manager",
-    image: "https://i.pravatar.cc/300?img=59",
+    image: veeresh.src,
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
   },
   {
