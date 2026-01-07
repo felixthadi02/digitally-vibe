@@ -372,7 +372,9 @@ const Stats: React.FC = () => {
           {stats.map((stat, index) => (
             <div key={index} className="text-center text-white">
               <div className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2">
-                <span ref={(el) => (numberRefs.current[index] = el)}>0</span>
+                <span 
+                // ref={(el) => (numberRefs.current[index] = el)}
+                >0</span>
                 {stat.suffix}
               </div>
               <div className="text-lg opacity-90">{stat.label}</div>
