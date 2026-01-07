@@ -77,7 +77,9 @@ const Stats = () => {
             >
               <div className="text-4xl mb-4">{stat.icon}</div>
               <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-2">
-                <span ref={(el) => (numberRefs.current[index] = el)}>0</span>
+                <span 
+                // ref={(el) => (numberRefs.current[index] = el)}
+                >0</span>
                 {stat.suffix}
               </div>
               <div className="text-lg text-white/90">{stat.label}</div>
