@@ -3,7 +3,6 @@
   import Link from "next/link";
   import { ChevronDown } from "lucide-react";
   import Image from "next/image";
-  const logo = 'https://digitallyvibe.com/wp-content/uploads/2025/02/cropped-Red-and-White-Modern-D-Letter-Startup-Logo.png';
 
   export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +71,7 @@
                       }`}
                     >
                       <Image
-                        src={logo}
+                        src="/logo.png"
                         alt="DigitallyVibe Logo"
                         fill
                         className="object-contain"
@@ -87,7 +86,7 @@
               {/* Desktop Menu */}
               <div className="hidden lg:flex items-center space-x-1">
                 {/* Home */}
-                <Link href="home" className="relative px-3 xl:px-4 py-2 group">
+                <Link href="/" className="relative px-3 xl:px-4 py-2 group">
                   <span className="relative z-10 text-sm font-medium text-gray-600 group-hover:text-[#ff3233] transition-colors duration-300">
                     Home
                   </span>
@@ -95,42 +94,14 @@
                   <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ff3233] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300" />
                 </Link>
 
-                {/* Services Dropdown */}
-                <div className="relative group">
-                  <button className="relative px-3 xl:px-4 py-2 flex items-center group">
-                    <span className="relative z-10 text-sm font-medium text-gray-600 group-hover:text-[#ff3233] transition-colors duration-300">
-                      Services
-                    </span>
-                    <ChevronDown className="ml-1 h-4 w-4 text-gray-400 group-hover:text-[#ff3233] group-hover:rotate-180 transition-all duration-300" />
-                    <span className="absolute inset-0 bg-[#ff3233]/0 group-hover:bg-[#ff3233]/10 rounded-xl transition-all duration-300" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
-                    <div className="w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(255,50,51,0.15)] border border-gray-100/50 overflow-hidden">
-                      {/* Dropdown header */}
-                      <div className="bg-gradient-to-r from-[#ff3233] to-[#ff6b6b] px-5 py-3">
-                        <p className="text-white/90 text-xs font-medium uppercase tracking-wider">
-                          Our Services
-                        </p>
-                      </div>
-                      <div className="p-2">
-                        {servicesDropdown.map((item, index) => (
-                          <Link
-                            key={index}
-                            href={item.href}
-                            className="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-gradient-to-r hover:from-[#ff3233]/10 hover:to-transparent hover:text-[#ff3233] transition-all duration-300 group/item"
-                          >
-                            {/* <span className="mr-3 text-lg">{item.icon}</span> */}
-                            <span className="text-sm font-medium">{item.label}</span>
-                            <ChevronDown className="ml-auto h-4 w-4 -rotate-90 opacity-0 group-hover/item:opacity-100 transition-all duration-300" />
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+               
+<Link href="/services" className="relative px-3 xl:px-4 py-2 group">
+                  <span className="relative z-10 text-sm font-medium text-gray-600 group-hover:text-[#ff3233] transition-colors duration-300">
+                    services
+                  </span>
+                  <span className="absolute inset-0 bg-[#ff3233]/0 group-hover:bg-[#ff3233]/10 rounded-xl transition-all duration-300" />
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ff3233] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                </Link>
                 {/* Regular Links */}
                 {navLinks.map((item, index) => (
                   <Link
@@ -202,7 +173,7 @@
               <div className="pb-4 sm:pb-6 pt-2 sm:pt-4 border-t border-gray-200/50">
                 {/* Mobile Home */}
                 <Link
-                  href="home"
+                  href="/"
                   className="flex items-center py-2.5 sm:py-3 px-3 sm:px-4 text-gray-700 hover:bg-[#ff3233]/10 rounded-xl transition-all duration-300 group"
                   onClick={() => setIsOpen(false)}
                 >
