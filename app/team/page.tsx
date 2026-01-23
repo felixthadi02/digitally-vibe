@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import abhi from '@/public/abhi.webp';
 import veeresh from '@/public/veeresh.webp';
-import felix from '@/public/felix.JPEG';
+import felix from '@/public/felix.webp';
 import shabu from '@/public/shabu.jpeg';
 interface TeamMember {
   id: number;
