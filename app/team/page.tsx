@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import abhi from '@/public/abhi.webp';
 import veeresh from '@/public/veeresh.webp';
+import felix from '@/public/felix.JPEG';
+import shabu from '@/public/shabu.jpeg';
 interface TeamMember {
   id: number;
   name: string;
@@ -39,21 +41,21 @@ const teamMembers: TeamMember[] = [
     id: 3,
     name: "Rajyalaxmi",
     role: "Full stack Developer",
-    image: "https://i.pravatar.cc/300?img=11",
+    image: "https://i.pinimg.com/736x/06/d2/bc/06d2bc815d91a20137a70b012c7cad4a.jpg",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
   },
   {
     id: 4,
     name: "Felix Thadi",
     role: "Marketing",
-    image: "https://i.pravatar.cc/300?img=26",
+    image: felix.src,
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
   },
   {
     id: 5,
     name: "Shabu",
     role: "SEO",
-    image: "https://i.pravatar.cc/300?img=8",
+    image: shabu.src,
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
   },
 ];
