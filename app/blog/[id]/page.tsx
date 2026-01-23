@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   Calendar,
   Clock,
@@ -19,89 +20,528 @@ import {
   Tag,
 } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Blog Post | Digitally Vibe",
-  description: "Read our latest insights on digital marketing and web development",
-};
+// Type definitions
+interface Author {
+  name: string;
+  avatar: string;
+  role: string;
+  bio: string;
+}
 
-// Mock data - In real app, fetch from API/CMS
-const post = {
-  id: 1,
-  title: "The Ultimate Guide to Digital Marketing in 2025",
-  excerpt:
-    "Discover the latest trends, strategies, and tools that will dominate the digital marketing landscape in 2025.",
-  content: `
-    <p>Digital marketing continues to evolve at a rapid pace, and staying ahead of the curve is essential for businesses looking to thrive in the online space. In this comprehensive guide, we'll explore the key trends and strategies that will define digital marketing in 2025.</p>
-    
-    <h2>1. AI-Powered Marketing Automation</h2>
-    <p>Artificial intelligence has transformed how we approach marketing campaigns. From predictive analytics to personalized content recommendations, AI is making marketing more efficient and effective than ever before.</p>
-    <p>Key applications include:</p>
-    <ul>
-      <li>Automated email campaigns with personalized content</li>
-      <li>Chatbots for customer service and lead generation</li>
-      <li>Predictive analytics for campaign optimization</li>
-      <li>Dynamic pricing strategies</li>
-    </ul>
-    
-    <h2>2. Voice Search Optimization</h2>
-    <p>With the growing adoption of smart speakers and voice assistants, optimizing for voice search has become crucial. Businesses need to focus on conversational keywords and natural language patterns.</p>
-    
-    <blockquote>
-      "By 2025, over 50% of all searches will be voice-based. Businesses that don't adapt will be left behind."
-    </blockquote>
-    
-    <h2>3. Video Content Dominance</h2>
-    <p>Video continues to be the most engaging form of content online. Short-form videos on platforms like TikTok and Instagram Reels are driving massive engagement, while long-form content on YouTube remains valuable for SEO.</p>
-    
-    <h2>4. Privacy-First Marketing</h2>
-    <p>With increasing privacy regulations and the death of third-party cookies, marketers need to adopt privacy-first strategies. First-party data collection and contextual advertising will become more important.</p>
-    
-    <h2>5. Influencer Marketing Evolution</h2>
-    <p>Influencer marketing is maturing, with a shift towards micro and nano-influencers who offer higher engagement rates and more authentic connections with their audiences.</p>
-    
-    <h2>Conclusion</h2>
-    <p>The digital marketing landscape in 2025 will be shaped by technology, privacy concerns, and changing consumer behaviors. Businesses that embrace these trends and adapt their strategies will be well-positioned for success.</p>
-  `,
-  image: "/blog/featured.jpg",
-  category: "Digital Marketing",
-  author: {
-    name: "John Doe",
-    avatar: "/team/member1.jpg",
-    role: "Marketing Director",
-    bio: "John has over 10 years of experience in digital marketing and has helped numerous businesses achieve their online goals.",
+interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  category: string;
+  author: Author;
+  date: string;
+  readTime: string;
+  tags: string[];
+  likes: number;
+  comments: number;
+}
+
+interface RelatedPost {
+  id: number;
+  title: string;
+  image: string;
+  category: string;
+  date: string;
+}
+
+// Complete blog posts data
+const blogPostsData: { [key: string]: BlogPost } = {
+  "1": {
+    id: 1,
+    title: "The Ultimate Guide to Digital Marketing in 2025",
+    excerpt:
+      "Discover the latest trends, strategies, and tools that will dominate the digital marketing landscape in 2025.",
+    content: `
+      <p>Digital marketing continues to evolve at a rapid pace, and staying ahead of the curve is essential for businesses looking to thrive in the online space. In this comprehensive guide, we'll explore the key trends and strategies that will define digital marketing in 2025.</p>
+      
+      <h2 id="section-1">1. AI-Powered Marketing Automation</h2>
+      <p>Artificial intelligence has transformed how we approach marketing campaigns. From predictive analytics to personalized content recommendations, AI is making marketing more efficient and effective than ever before.</p>
+      <p>Key applications include:</p>
+      <ul>
+        <li>Automated email campaigns with personalized content</li>
+        <li>Chatbots for customer service and lead generation</li>
+        <li>Predictive analytics for campaign optimization</li>
+        <li>Dynamic pricing strategies</li>
+      </ul>
+      
+      <h2 id="section-2">2. Voice Search Optimization</h2>
+      <p>With the growing adoption of smart speakers and voice assistants, optimizing for voice search has become crucial. Businesses need to focus on conversational keywords and natural language patterns.</p>
+      
+      <blockquote>
+        "By 2025, over 50% of all searches will be voice-based. Businesses that don't adapt will be left behind."
+      </blockquote>
+      
+      <h2 id="section-3">3. Video Content Dominance</h2>
+      <p>Video continues to be the most engaging form of content online. Short-form videos on platforms like TikTok and Instagram Reels are driving massive engagement, while long-form content on YouTube remains valuable for SEO.</p>
+      
+      <h2 id="section-4">4. Privacy-First Marketing</h2>
+      <p>With increasing privacy regulations and the death of third-party cookies, marketers need to adopt privacy-first strategies. First-party data collection and contextual advertising will become more important.</p>
+      
+      <h2 id="section-5">5. Influencer Marketing Evolution</h2>
+      <p>Influencer marketing is maturing, with a shift towards micro and nano-influencers who offer higher engagement rates and more authentic connections with their audiences.</p>
+      
+      <h2 id="section-6">Conclusion</h2>
+      <p>The digital marketing landscape in 2025 will be shaped by technology, privacy concerns, and changing consumer behaviors. Businesses that embrace these trends and adapt their strategies will be well-positioned for success.</p>
+    `,
+    image: "/blog/featured.jpg",
+    category: "Digital Marketing",
+    author: {
+      name: "John Doe",
+      avatar: "/team/member1.jpg",
+      role: "Marketing Director",
+      bio: "John has over 10 years of experience in digital marketing and has helped numerous businesses achieve their online goals.",
+    },
+    date: "Jan 15, 2025",
+    readTime: "12 min read",
+    tags: ["Marketing", "Trends", "Strategy", "AI", "SEO"],
+    likes: 456,
+    comments: 89,
   },
-  date: "Jan 15, 2025",
-  readTime: "12 min read",
-  tags: ["Marketing", "Trends", "Strategy", "AI", "SEO"],
-  likes: 456,
-  comments: 89,
-};
-
-const relatedPosts = [
-  {
+  "2": {
     id: 2,
-    title: "10 SEO Strategies That Actually Work",
+    title: "10 SEO Strategies That Actually Work in 2025",
+    excerpt:
+      "Learn proven SEO techniques that will help your website rank higher and drive organic traffic consistently.",
+    content: `
+      <p>Search Engine Optimization remains one of the most effective ways to drive organic traffic to your website. In this guide, we'll cover the top 10 SEO strategies that are proven to work in 2025.</p>
+      
+      <h2 id="section-1">1. Focus on Search Intent</h2>
+      <p>Understanding what users are looking for when they search is more important than ever. Google's algorithms have become sophisticated at understanding user intent, so your content needs to match what users actually want.</p>
+      
+      <h2 id="section-2">2. Core Web Vitals Optimization</h2>
+      <p>Page experience signals, including Core Web Vitals, are now ranking factors. Focus on:</p>
+      <ul>
+        <li>Largest Contentful Paint (LCP) - under 2.5 seconds</li>
+        <li>First Input Delay (FID) - under 100 milliseconds</li>
+        <li>Cumulative Layout Shift (CLS) - under 0.1</li>
+      </ul>
+      
+      <h2 id="section-3">3. Create Comprehensive Content</h2>
+      <p>Long-form, in-depth content that thoroughly covers a topic tends to rank better. Aim for content that answers all related questions a user might have.</p>
+      
+      <blockquote>
+        "Content that provides real value and answers user questions comprehensively will always outperform thin content."
+      </blockquote>
+      
+      <h2 id="section-4">4. Build Quality Backlinks</h2>
+      <p>Quality over quantity remains the mantra for link building. Focus on earning links from authoritative, relevant websites in your industry.</p>
+      
+      <h2 id="section-5">5. Optimize for Featured Snippets</h2>
+      <p>Featured snippets appear at the top of search results and can significantly increase your visibility. Structure your content to answer questions directly and concisely.</p>
+      
+      <h2 id="section-6">6. Technical SEO Foundation</h2>
+      <p>Ensure your website has a solid technical foundation with proper indexing, XML sitemaps, schema markup, and mobile optimization.</p>
+      
+      <h2 id="section-7">7. Local SEO for Local Businesses</h2>
+      <p>If you serve a local market, optimize your Google Business Profile, build local citations, and encourage customer reviews.</p>
+      
+      <h2 id="section-8">8. E-E-A-T Signals</h2>
+      <p>Experience, Expertise, Authoritativeness, and Trustworthiness are crucial for ranking, especially in YMYL (Your Money Your Life) topics.</p>
+      
+      <h2 id="section-9">9. Video SEO</h2>
+      <p>Video content can help you rank in both regular search and video search results. Optimize video titles, descriptions, and add transcripts.</p>
+      
+      <h2 id="section-10">10. Regular Content Updates</h2>
+      <p>Keep your content fresh and up-to-date. Regularly audit and update older content to maintain and improve rankings.</p>
+      
+      <h2>Conclusion</h2>
+      <p>SEO success in 2025 requires a holistic approach combining technical excellence, quality content, and strategic link building. Implement these strategies consistently for long-term results.</p>
+    `,
     image: "/blog/post1.jpg",
     category: "SEO",
+    author: {
+      name: "Sarah Williams",
+      avatar: "/team/member4.jpg",
+      role: "SEO Specialist",
+      bio: "Sarah is an SEO expert with 8 years of experience helping businesses improve their search visibility and organic traffic.",
+    },
     date: "Jan 12, 2025",
+    readTime: "8 min read",
+    tags: ["SEO", "Google", "Rankings", "Traffic", "Content"],
+    likes: 234,
+    comments: 45,
   },
-  {
+  "3": {
     id: 3,
     title: "Building a Brand Identity That Stands Out",
+    excerpt:
+      "Your complete guide to creating a memorable and impactful brand identity for your business.",
+    content: `
+      <p>In today's crowded marketplace, having a strong brand identity is essential for standing out and connecting with your target audience. This guide will walk you through the key elements of building a memorable brand.</p>
+      
+      <h2 id="section-1">1. Define Your Brand Purpose</h2>
+      <p>Before diving into visual elements, you need to understand why your brand exists beyond making money. What problem do you solve? What change do you want to create in the world?</p>
+      
+      <h2 id="section-2">2. Know Your Target Audience</h2>
+      <p>Understanding who you're trying to reach is fundamental to building a brand that resonates. Create detailed buyer personas that go beyond demographics to include psychographics, pain points, and aspirations.</p>
+      
+      <h2 id="section-3">3. Develop Your Brand Personality</h2>
+      <p>Your brand should have a distinct personality that comes through in all communications. Is your brand:</p>
+      <ul>
+        <li>Professional or casual?</li>
+        <li>Serious or playful?</li>
+        <li>Traditional or innovative?</li>
+        <li>Luxurious or accessible?</li>
+      </ul>
+      
+      <blockquote>
+        "A strong brand personality creates emotional connections with customers that go beyond product features and prices."
+      </blockquote>
+      
+      <h2 id="section-4">4. Create Your Visual Identity</h2>
+      <p>Your visual identity includes your logo, color palette, typography, imagery style, and other visual elements. These should all work together to communicate your brand personality consistently.</p>
+      
+      <h2 id="section-5">5. Craft Your Brand Voice</h2>
+      <p>How your brand communicates is just as important as how it looks. Develop a consistent tone of voice that reflects your brand personality and resonates with your audience.</p>
+      
+      <h2 id="section-6">6. Build Brand Guidelines</h2>
+      <p>Document all your brand elements in a comprehensive brand guidelines document. This ensures consistency across all touchpoints and team members.</p>
+      
+      <h2>Conclusion</h2>
+      <p>Building a strong brand identity takes time and effort, but it's one of the most valuable investments you can make in your business. A memorable brand creates customer loyalty and sets you apart from competitors.</p>
+    `,
     image: "/blog/post2.jpg",
     category: "Branding",
+    author: {
+      name: "Jane Smith",
+      avatar: "/team/member2.jpg",
+      role: "Creative Director",
+      bio: "Jane is an award-winning creative director with a passion for building brands that make a lasting impact.",
+    },
     date: "Jan 10, 2025",
+    readTime: "10 min read",
+    tags: ["Branding", "Design", "Identity", "Logo", "Strategy"],
+    likes: 189,
+    comments: 32,
   },
-  {
+  "4": {
     id: 4,
-    title: "Social Media Marketing Guide",
+    title: "Next.js vs React: Which One Should You Choose?",
+    excerpt:
+      "A comprehensive comparison to help you decide the right framework for your next web development project.",
+    content: `
+      <p>When starting a new web project, one of the first decisions you'll face is choosing the right technology. Next.js and React are both popular choices, but they serve different purposes. Let's break down the differences.</p>
+      
+      <h2 id="section-1">1. Understanding React</h2>
+      <p>React is a JavaScript library for building user interfaces. It's component-based, meaning you build encapsulated components that manage their own state and compose them to make complex UIs.</p>
+      <ul>
+        <li>Client-side rendering by default</li>
+        <li>Requires additional setup for routing, SSR, etc.</li>
+        <li>Complete freedom in architecture decisions</li>
+        <li>Large ecosystem of third-party libraries</li>
+      </ul>
+      
+      <h2 id="section-2">2. Understanding Next.js</h2>
+      <p>Next.js is a React framework that provides additional structure and features out of the box:</p>
+      <ul>
+        <li>Server-side rendering (SSR)</li>
+        <li>Static site generation (SSG)</li>
+        <li>File-based routing</li>
+        <li>API routes</li>
+        <li>Built-in optimization features</li>
+      </ul>
+      
+      <blockquote>
+        "Next.js gives you production-grade features out of the box, while React gives you complete flexibility to build your own stack."
+      </blockquote>
+      
+      <h2 id="section-3">3. When to Choose React</h2>
+      <p>Choose React when you:</p>
+      <ul>
+        <li>Need complete control over your architecture</li>
+        <li>Are building a single-page application (SPA)</li>
+        <li>Have a team experienced with custom configurations</li>
+        <li>Don't need SEO optimization</li>
+      </ul>
+      
+      <h2 id="section-4">4. When to Choose Next.js</h2>
+      <p>Choose Next.js when you:</p>
+      <ul>
+        <li>Need excellent SEO performance</li>
+        <li>Want faster initial page loads</li>
+        <li>Prefer convention over configuration</li>
+        <li>Need both static and dynamic pages</li>
+        <li>Want built-in API routes</li>
+      </ul>
+      
+      <h2 id="section-5">5. Performance Comparison</h2>
+      <p>Next.js generally offers better performance out of the box due to its automatic code splitting, image optimization, and server-side rendering capabilities.</p>
+      
+      <h2 id="section-6">6. SEO Considerations</h2>
+      <p>For SEO-focused projects, Next.js has a clear advantage with its SSR and SSG capabilities that ensure search engines can easily crawl and index your content.</p>
+      
+      <h2>Conclusion</h2>
+      <p>The choice between Next.js and React depends on your project requirements. For most production websites, Next.js offers a better developer experience and performance. However, for complex SPAs where you need full control, React might be the better choice.</p>
+    `,
+    image: "/blog/post3.jpg",
+    category: "Web Development",
+    author: {
+      name: "Mike Johnson",
+      avatar: "/team/member3.jpg",
+      role: "Lead Developer",
+      bio: "Mike is a full-stack developer with expertise in React, Next.js, and modern web technologies.",
+    },
+    date: "Jan 8, 2025",
+    readTime: "7 min read",
+    tags: ["React", "Next.js", "JavaScript", "Framework", "Web Dev"],
+    likes: 312,
+    comments: 67,
+  },
+  "5": {
+    id: 5,
+    title: "Social Media Marketing: Complete Strategy Guide",
+    excerpt:
+      "Master the art of social media marketing with our comprehensive strategy framework.",
+    content: `
+      <p>Social media marketing has become essential for businesses of all sizes. This comprehensive guide will help you develop a winning social media strategy.</p>
+      
+      <h2 id="section-1">1. Set Clear Goals</h2>
+      <p>Before posting anything, define what you want to achieve:</p>
+      <ul>
+        <li>Brand awareness</li>
+        <li>Lead generation</li>
+        <li>Customer engagement</li>
+        <li>Website traffic</li>
+        <li>Sales conversions</li>
+      </ul>
+      
+      <h2 id="section-2">2. Choose the Right Platforms</h2>
+      <p>Not every platform is right for every business. Consider where your target audience spends their time:</p>
+      <ul>
+        <li><strong>Instagram:</strong> Visual brands, lifestyle, fashion, food</li>
+        <li><strong>LinkedIn:</strong> B2B, professional services</li>
+        <li><strong>TikTok:</strong> Younger demographics, entertainment</li>
+        <li><strong>Facebook:</strong> Broad demographics, community building</li>
+        <li><strong>Twitter:</strong> News, customer service, thought leadership</li>
+      </ul>
+      
+      <blockquote>
+        "It's better to excel on two platforms than to be mediocre on five. Focus your efforts where your audience is most active."
+      </blockquote>
+      
+      <h2 id="section-3">3. Create a Content Calendar</h2>
+      <p>Consistency is key in social media. Plan your content in advance using a content calendar that includes post types, themes, and optimal posting times.</p>
+      
+      <h2 id="section-4">4. Engage With Your Audience</h2>
+      <p>Social media is a two-way conversation. Respond to comments, ask questions, and participate in relevant discussions to build genuine connections.</p>
+      
+      <h2 id="section-5">5. Leverage Paid Advertising</h2>
+      <p>Organic reach is declining on most platforms. Allocate budget for paid promotion to expand your reach and target specific audiences.</p>
+      
+      <h2 id="section-6">6. Track and Analyze Performance</h2>
+      <p>Use analytics to understand what's working and what's not. Key metrics to track include engagement rate, reach, clicks, and conversions.</p>
+      
+      <h2>Conclusion</h2>
+      <p>A successful social media strategy requires planning, consistency, and continuous optimization. Start with clear goals, focus on the right platforms, and always put your audience first.</p>
+    `,
     image: "/blog/post4.jpg",
     category: "Social Media",
+    author: {
+      name: "Sarah Williams",
+      avatar: "/team/member4.jpg",
+      role: "Social Media Manager",
+      bio: "Sarah specializes in building engaged social media communities and creating viral content strategies.",
+    },
     date: "Jan 5, 2025",
+    readTime: "15 min read",
+    tags: ["Social Media", "Marketing", "Strategy", "Instagram", "Content"],
+    likes: 276,
+    comments: 54,
   },
-];
+  "6": {
+    id: 6,
+    title: "The Power of Content Marketing for B2B",
+    excerpt:
+      "How to create content that converts leads into customers in the B2B space.",
+    content: `
+      <p>B2B content marketing requires a different approach than B2C. This guide will show you how to create content that resonates with business decision-makers and drives conversions.</p>
+      
+      <h2 id="section-1">1. Understand the B2B Buyer Journey</h2>
+      <p>B2B purchases typically involve multiple stakeholders and longer decision cycles. Your content needs to address different stages:</p>
+      <ul>
+        <li><strong>Awareness:</strong> Blog posts, industry reports</li>
+        <li><strong>Consideration:</strong> Case studies, comparison guides</li>
+        <li><strong>Decision:</strong> Product demos, ROI calculators</li>
+      </ul>
+      
+      <h2 id="section-2">2. Focus on Thought Leadership</h2>
+      <p>B2B buyers want to work with experts. Establish your authority through in-depth articles, original research, and industry insights.</p>
+      
+      <blockquote>
+        "In B2B, trust is built through demonstrated expertise. Every piece of content should reinforce your position as an industry leader."
+      </blockquote>
+      
+      <h2 id="section-3">3. Create Case Studies</h2>
+      <p>Nothing convinces B2B buyers like proof of results. Develop detailed case studies that showcase how you've helped similar businesses succeed.</p>
+      
+      <h2 id="section-4">4. Develop Gated Content</h2>
+      <p>Use valuable content like whitepapers, ebooks, and reports as lead magnets. This helps build your email list with qualified prospects.</p>
+      
+      <h2 id="section-5">5. Optimize for LinkedIn</h2>
+      <p>LinkedIn is the primary social platform for B2B marketing. Share your content consistently and engage in relevant industry groups.</p>
+      
+      <h2 id="section-6">6. Measure What Matters</h2>
+      <p>Track metrics that tie to business outcomes: lead quality, conversion rates, and customer acquisition cost, not just vanity metrics.</p>
+      
+      <h2>Conclusion</h2>
+      <p>B2B content marketing success comes from understanding your audience, providing genuine value, and measuring the right outcomes. Focus on quality over quantity.</p>
+    `,
+    image: "/blog/post5.jpg",
+    category: "Content Marketing",
+    author: {
+      name: "John Doe",
+      avatar: "/team/member1.jpg",
+      role: "Marketing Director",
+      bio: "John has over 10 years of experience in B2B marketing and content strategy.",
+    },
+    date: "Jan 3, 2025",
+    readTime: "9 min read",
+    tags: ["B2B", "Content Marketing", "Lead Generation", "Strategy"],
+    likes: 198,
+    comments: 28,
+  },
+  "7": {
+    id: 7,
+    title: "UI/UX Design Trends to Watch in 2025",
+    excerpt:
+      "Explore the latest design trends that are shaping user experiences across digital platforms.",
+    content: `
+      <p>The world of UI/UX design is constantly evolving. Here are the key trends that will shape digital experiences in 2025.</p>
+      
+      <h2 id="section-1">1. AI-Powered Personalization</h2>
+      <p>Interfaces that adapt to individual user preferences and behaviors are becoming the norm. AI enables truly personalized experiences at scale.</p>
+      
+      <h2 id="section-2">2. Minimalist Design with Depth</h2>
+      <p>Clean, minimalist interfaces remain popular, but with added depth through subtle shadows, layers, and micro-interactions.</p>
+      
+      <h2 id="section-3">3. Dark Mode as Default</h2>
+      <p>Many apps and websites now offer dark mode by default, with some even making it the primary design choice.</p>
+      
+      <blockquote>
+        "Dark mode isn't just a trend—it's become a user expectation. Design for both light and dark themes from the start."
+      </blockquote>
+      
+      <h2 id="section-4">4. Micro-Interactions</h2>
+      <p>Small, delightful animations that respond to user actions make interfaces feel more alive and engaging.</p>
+      
+      <h2 id="section-5">5. Voice User Interfaces</h2>
+      <p>As voice assistants become more prevalent, designing for voice interactions is becoming an essential skill.</p>
+      
+      <h2 id="section-6">6. Inclusive Design</h2>
+      <p>Accessibility is no longer an afterthought. Designing for all abilities and contexts is now a fundamental requirement.</p>
+      
+      <h2>Conclusion</h2>
+      <p>Stay ahead of design trends while always keeping user needs at the center of your design decisions.</p>
+    `,
+    image: "/blog/post6.jpg",
+    category: "Design",
+    author: {
+      name: "Jane Smith",
+      avatar: "/team/member2.jpg",
+      role: "Creative Director",
+      bio: "Jane leads our design team and stays at the forefront of UI/UX trends and best practices.",
+    },
+    date: "Dec 28, 2024",
+    readTime: "6 min read",
+    tags: ["UI/UX", "Design", "Trends", "User Experience", "2025"],
+    likes: 421,
+    comments: 89,
+  },
+};
 
-export default function BlogPostPage() {
+// Helper function to get related posts
+const getRelatedPosts = (currentId: string, category: string): RelatedPost[] => {
+  return Object.values(blogPostsData)
+    .filter((post) => post.id.toString() !== currentId)
+    .filter((post) => post.category === category || Math.random() > 0.5)
+    .slice(0, 3)
+    .map((post) => ({
+      id: post.id,
+      title: post.title,
+      image: post.image,
+      category: post.category,
+      date: post.date,
+    }));
+};
+
+// Helper function to get navigation posts
+const getNavigationPosts = (currentId: string) => {
+  const ids = Object.keys(blogPostsData).map(Number).sort((a, b) => a - b);
+  const currentIndex = ids.indexOf(parseInt(currentId));
+  
+  return {
+    prev: currentIndex > 0 ? blogPostsData[ids[currentIndex - 1].toString()] : null,
+    next: currentIndex < ids.length - 1 ? blogPostsData[ids[currentIndex + 1].toString()] : null,
+  };
+};
+
+// Generate static params for all blog posts
+export async function generateStaticParams() {
+  return Object.keys(blogPostsData).map((id) => ({
+    id: id,
+  }));
+}
+
+// Generate metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const post = blogPostsData[id];
+
+  if (!post) {
+    return {
+      title: "Post Not Found | Digitally Vibe",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
+  return {
+    title: `${post.title} | Digitally Vibe Blog`,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+    },
+  };
+}
+
+// Page component
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const post = blogPostsData[id];
+
+  if (!post) {
+    notFound();
+  }
+
+  const relatedPosts = getRelatedPosts(id, post.category);
+  const { prev, next } = getNavigationPosts(id);
+
+  // Table of contents extraction (simplified)
+  const tableOfContents = [
+    "AI-Powered Marketing",
+    "Voice Search Optimization",
+    "Video Content Dominance",
+    "Privacy-First Marketing",
+    "Influencer Marketing",
+    "Conclusion",
+  ];
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -161,7 +601,7 @@ export default function BlogPostPage() {
       {/* Featured Image */}
       <section className="px-4 -mt-8 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-gray-200">
             <Image
               src={post.image}
               alt={post.title}
@@ -287,30 +727,38 @@ export default function BlogPostPage() {
 
               {/* Post Navigation */}
               <div className="mt-12 grid md:grid-cols-2 gap-6">
-                <Link
-                  href="#"
-                  className="group p-6 bg-gray-50 hover:bg-red-50 rounded-2xl transition-colors"
-                >
-                  <div className="flex items-center gap-2 text-gray-400 text-sm mb-2">
-                    <ArrowLeft size={16} />
-                    Previous Post
-                  </div>
-                  <h4 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
-                    10 SEO Strategies That Actually Work
-                  </h4>
-                </Link>
-                <Link
-                  href="#"
-                  className="group p-6 bg-gray-50 hover:bg-red-50 rounded-2xl transition-colors text-right"
-                >
-                  <div className="flex items-center justify-end gap-2 text-gray-400 text-sm mb-2">
-                    Next Post
-                    <ArrowRight size={16} />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
-                    Building a Brand Identity That Stands Out
-                  </h4>
-                </Link>
+                {prev ? (
+                  <Link
+                    href={`/blog/${prev.id}`}
+                    className="group p-6 bg-gray-50 hover:bg-red-50 rounded-2xl transition-colors"
+                  >
+                    <div className="flex items-center gap-2 text-gray-400 text-sm mb-2">
+                      <ArrowLeft size={16} />
+                      Previous Post
+                    </div>
+                    <h4 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2">
+                      {prev.title}
+                    </h4>
+                  </Link>
+                ) : (
+                  <div></div>
+                )}
+                {next ? (
+                  <Link
+                    href={`/blog/${next.id}`}
+                    className="group p-6 bg-gray-50 hover:bg-red-50 rounded-2xl transition-colors text-right"
+                  >
+                    <div className="flex items-center justify-end gap-2 text-gray-400 text-sm mb-2">
+                      Next Post
+                      <ArrowRight size={16} />
+                    </div>
+                    <h4 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2">
+                      {next.title}
+                    </h4>
+                  </Link>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
 
@@ -323,14 +771,7 @@ export default function BlogPostPage() {
                     Table of Contents
                   </h3>
                   <nav className="space-y-2">
-                    {[
-                      "AI-Powered Marketing",
-                      "Voice Search Optimization",
-                      "Video Content Dominance",
-                      "Privacy-First Marketing",
-                      "Influencer Marketing",
-                      "Conclusion",
-                    ].map((item, index) => (
+                    {tableOfContents.map((item, index) => (
                       <a
                         key={index}
                         href={`#section-${index + 1}`}
@@ -370,29 +811,29 @@ export default function BlogPostPage() {
             Related <span className="text-red-600">Articles</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {relatedPosts.map((post) => (
+            {relatedPosts.map((relatedPost) => (
               <Link
-                key={post.id}
-                href={`/blog/${post.id}`}
+                key={relatedPost.id}
+                href={`/blog/${relatedPost.id}`}
                 className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="relative h-48 bg-gray-200">
                   <Image
-                    src={post.image}
-                    alt={post.title}
+                    src={relatedPost.image}
+                    alt={relatedPost.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-4 left-4">
                     <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                      {post.category}
+                      {relatedPost.category}
                     </span>
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="text-gray-400 text-sm mb-2">{post.date}</div>
-                  <h3 className="font-bold text-gray-900 group-hover:text-red-600 transition-colors">
-                    {post.title}
+                  <div className="text-gray-400 text-sm mb-2">{relatedPost.date}</div>
+                  <h3 className="font-bold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2">
+                    {relatedPost.title}
                   </h3>
                 </div>
               </Link>
@@ -490,6 +931,19 @@ export default function BlogPostPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Back to Blog */}
+      <section className="py-8 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors"
+          >
+            <ArrowLeft size={18} />
+            Back to All Posts
+          </Link>
         </div>
       </section>
     </div>

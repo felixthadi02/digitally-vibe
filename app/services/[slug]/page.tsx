@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   CheckCircle,
   ArrowRight,
@@ -12,10 +13,16 @@ import {
   Zap,
   Phone,
   MessageCircle,
+  Code,
+  Megaphone,
+  Search,
+  Palette,
+  Share2,
+  PenTool,
 } from "lucide-react";
 
-// Service data (in real app, fetch from API/CMS)
-const servicesData: { [key: string]: any } = {
+// Complete service data for all services
+const servicesData: { [key: string]: ServiceData } = {
   "web-development": {
     title: "Web Development",
     tagline: "Modern, responsive websites that convert visitors into customers",
@@ -118,41 +125,608 @@ const servicesData: { [key: string]: any } = {
       },
     ],
   },
-  // Add more services...
+  "digital-marketing": {
+    title: "Digital Marketing",
+    tagline: "Data-driven marketing strategies that deliver measurable ROI",
+    description:
+      "Our digital marketing services help you reach your target audience effectively. We create comprehensive strategies that increase brand awareness, generate leads, and boost sales through multiple channels.",
+    image: "/services/digital-marketing.jpg",
+    icon: "📢",
+    color: "from-red-500 to-red-600",
+    features: [
+      {
+        title: "Marketing Strategy Development",
+        desc: "Customized strategies aligned with your business goals",
+      },
+      {
+        title: "PPC Advertising",
+        desc: "Google Ads and Meta Ads management",
+      },
+      {
+        title: "Email Marketing Campaigns",
+        desc: "Automated email sequences that convert",
+      },
+      {
+        title: "Marketing Automation",
+        desc: "Streamlined workflows for better efficiency",
+      },
+      {
+        title: "Analytics & Reporting",
+        desc: "Detailed insights and performance tracking",
+      },
+      {
+        title: "Conversion Rate Optimization",
+        desc: "Improve your website's conversion rates",
+      },
+    ],
+    technologies: [
+      "Google Ads",
+      "Meta Ads",
+      "HubSpot",
+      "Mailchimp",
+      "Google Analytics",
+      "Hotjar",
+      "Semrush",
+      "Zapier",
+    ],
+    process: [
+      { step: "Audit", desc: "Analyzing your current marketing efforts" },
+      { step: "Strategy", desc: "Creating a comprehensive marketing plan" },
+      { step: "Implementation", desc: "Setting up campaigns and automation" },
+      { step: "Optimization", desc: "Continuous testing and improvement" },
+      { step: "Reporting", desc: "Regular performance reports" },
+      { step: "Scaling", desc: "Expanding successful campaigns" },
+    ],
+    pricing: [
+      {
+        name: "Starter",
+        price: "₹20,000/mo",
+        features: ["1 Platform", "Basic Ads", "Monthly Report", "Email Support"],
+      },
+      {
+        name: "Growth",
+        price: "₹45,000/mo",
+        features: ["3 Platforms", "Advanced Ads", "Weekly Reports", "Dedicated Manager"],
+      },
+      {
+        name: "Enterprise",
+        price: "₹85,000/mo",
+        features: [
+          "All Platforms",
+          "Full Automation",
+          "Daily Reports",
+          "Priority Support",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How soon will I see results?",
+        a: "PPC can show results within days, while organic strategies take 3-6 months.",
+      },
+      {
+        q: "What's the minimum ad budget?",
+        a: "We recommend at least ₹30,000/month for effective campaigns.",
+      },
+      {
+        q: "Do you provide reports?",
+        a: "Yes, we provide detailed weekly/monthly performance reports.",
+      },
+    ],
+    stats: { projects: "150+", clients: "120+", satisfaction: "98%" },
+    caseStudies: [
+      {
+        title: "ShopEase Campaign",
+        result: "200% ROI increase",
+        image: "/portfolio/project2.jpg",
+      },
+      {
+        title: "FoodDelivery App",
+        result: "50K app downloads",
+        image: "/portfolio/project3.jpg",
+      },
+    ],
+  },
+  "seo": {
+    title: "SEO Services",
+    tagline: "Improve your search rankings and drive organic traffic",
+    description:
+      "Our SEO experts use proven strategies to improve your website's visibility on search engines. We focus on sustainable, white-hat techniques that deliver long-term results and establish your online authority.",
+    image: "/services/seo.jpg",
+    icon: "🔍",
+    color: "from-green-500 to-green-600",
+    features: [
+      {
+        title: "Technical SEO Audit",
+        desc: "Comprehensive analysis of your website's technical health",
+      },
+      {
+        title: "On-Page Optimization",
+        desc: "Content and meta tag optimization",
+      },
+      {
+        title: "Off-Page SEO & Link Building",
+        desc: "Quality backlink acquisition strategies",
+      },
+      {
+        title: "Local SEO",
+        desc: "Dominate local search results",
+      },
+      {
+        title: "Keyword Research & Strategy",
+        desc: "Target the right keywords for your business",
+      },
+      {
+        title: "SEO Content Writing",
+        desc: "Engaging, optimized content creation",
+      },
+    ],
+    technologies: [
+      "Ahrefs",
+      "SEMrush",
+      "Moz",
+      "Google Search Console",
+      "Screaming Frog",
+      "Surfer SEO",
+      "Google Analytics",
+      "Schema Pro",
+    ],
+    process: [
+      { step: "Audit", desc: "Complete website SEO analysis" },
+      { step: "Research", desc: "Keyword and competitor research" },
+      { step: "Strategy", desc: "Custom SEO roadmap creation" },
+      { step: "Optimization", desc: "On-page and technical fixes" },
+      { step: "Link Building", desc: "Quality backlink acquisition" },
+      { step: "Monitoring", desc: "Ongoing tracking and adjustments" },
+    ],
+    pricing: [
+      {
+        name: "Local SEO",
+        price: "₹15,000/mo",
+        features: ["Local Listings", "Google My Business", "5 Keywords", "Monthly Report"],
+      },
+      {
+        name: "National SEO",
+        price: "₹35,000/mo",
+        features: ["15 Keywords", "Content Strategy", "Link Building", "Weekly Reports"],
+      },
+      {
+        name: "Enterprise SEO",
+        price: "₹75,000/mo",
+        features: [
+          "Unlimited Keywords",
+          "Full Content Team",
+          "Aggressive Link Building",
+          "Daily Monitoring",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How long does SEO take to work?",
+        a: "Typically 3-6 months to see significant results.",
+      },
+      {
+        q: "Do you guarantee first page rankings?",
+        a: "We don't guarantee specific rankings, but we guarantee improvement.",
+      },
+      {
+        q: "What's included in the audit?",
+        a: "Technical, on-page, off-page, and content analysis with recommendations.",
+      },
+    ],
+    stats: { projects: "180+", clients: "140+", satisfaction: "97%" },
+    caseStudies: [
+      {
+        title: "E-commerce Store",
+        result: "300% organic traffic increase",
+        image: "/portfolio/project4.jpg",
+      },
+      {
+        title: "Local Business",
+        result: "Top 3 for 50+ keywords",
+        image: "/portfolio/project5.jpg",
+      },
+    ],
+  },
+  "branding": {
+    title: "Branding & Design",
+    tagline: "Create a memorable brand identity that stands out",
+    description:
+      "We help businesses create powerful brand identities that resonate with their target audience. From logo design to complete brand guidelines, we bring your vision to life with creative excellence.",
+    image: "/services/branding.jpg",
+    icon: "🎨",
+    color: "from-purple-500 to-purple-600",
+    features: [
+      {
+        title: "Logo Design",
+        desc: "Unique, memorable logos that represent your brand",
+      },
+      {
+        title: "Brand Identity Development",
+        desc: "Complete visual identity system",
+      },
+      {
+        title: "Brand Guidelines",
+        desc: "Comprehensive brand usage documentation",
+      },
+      {
+        title: "Print Design",
+        desc: "Business cards, brochures, and more",
+      },
+      {
+        title: "Packaging Design",
+        desc: "Eye-catching product packaging",
+      },
+      {
+        title: "Brand Strategy",
+        desc: "Strategic positioning and messaging",
+      },
+    ],
+    technologies: [
+      "Adobe Illustrator",
+      "Photoshop",
+      "Figma",
+      "InDesign",
+      "After Effects",
+      "Canva Pro",
+      "Sketch",
+      "Procreate",
+    ],
+    process: [
+      { step: "Discovery", desc: "Understanding your brand vision" },
+      { step: "Research", desc: "Market and competitor analysis" },
+      { step: "Concept", desc: "Initial design concepts" },
+      { step: "Refinement", desc: "Revisions based on feedback" },
+      { step: "Finalization", desc: "Final designs and assets" },
+      { step: "Delivery", desc: "Brand guidelines and files" },
+    ],
+    pricing: [
+      {
+        name: "Logo Package",
+        price: "₹15,000",
+        features: ["3 Concepts", "5 Revisions", "All File Formats", "Copyright Transfer"],
+      },
+      {
+        name: "Brand Identity",
+        price: "₹45,000",
+        features: ["Logo + Stationery", "Color Palette", "Typography", "Brand Guidelines"],
+      },
+      {
+        name: "Complete Branding",
+        price: "₹95,000",
+        features: [
+          "Full Brand Identity",
+          "Marketing Collateral",
+          "Social Media Kit",
+          "Brand Strategy",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How many logo concepts do I get?",
+        a: "You'll receive 3 unique concepts to choose from.",
+      },
+      {
+        q: "What files will I receive?",
+        a: "AI, EPS, PDF, PNG, JPG, and SVG formats.",
+      },
+      {
+        q: "Can you redesign my existing logo?",
+        a: "Yes, we offer logo refresh and complete redesign services.",
+      },
+    ],
+    stats: { projects: "120+", clients: "100+", satisfaction: "99%" },
+    caseStudies: [
+      {
+        title: "FashionHub Rebrand",
+        result: "40% brand recall increase",
+        image: "/portfolio/project1.jpg",
+      },
+      {
+        title: "TechCorp Identity",
+        result: "Complete brand transformation",
+        image: "/portfolio/project2.jpg",
+      },
+    ],
+  },
+  "social-media": {
+    title: "Social Media Marketing",
+    tagline: "Build and engage your community across social platforms",
+    description:
+      "We manage your social media presence to build brand awareness, engage with your audience, and drive traffic to your website. Our strategies are tailored to each platform for maximum impact.",
+    image: "/services/social-media.jpg",
+    icon: "📱",
+    color: "from-pink-500 to-pink-600",
+    features: [
+      {
+        title: "Social Media Strategy",
+        desc: "Platform-specific strategies for growth",
+      },
+      {
+        title: "Content Creation & Curation",
+        desc: "Engaging posts, stories, and reels",
+      },
+      {
+        title: "Community Management",
+        desc: "Active engagement with your audience",
+      },
+      {
+        title: "Social Media Advertising",
+        desc: "Targeted paid campaigns",
+      },
+      {
+        title: "Influencer Marketing",
+        desc: "Collaborations with relevant influencers",
+      },
+      {
+        title: "Analytics & Reporting",
+        desc: "Performance tracking and insights",
+      },
+    ],
+    technologies: [
+      "Instagram",
+      "Facebook",
+      "LinkedIn",
+      "Twitter",
+      "TikTok",
+      "YouTube",
+      "Pinterest",
+      "Hootsuite",
+    ],
+    process: [
+      { step: "Audit", desc: "Review current social presence" },
+      { step: "Strategy", desc: "Platform and content strategy" },
+      { step: "Content", desc: "Content calendar creation" },
+      { step: "Publishing", desc: "Scheduled posting" },
+      { step: "Engagement", desc: "Community interaction" },
+      { step: "Analysis", desc: "Performance optimization" },
+    ],
+    pricing: [
+      {
+        name: "Starter",
+        price: "₹18,000/mo",
+        features: ["2 Platforms", "12 Posts/Month", "Basic Graphics", "Monthly Report"],
+      },
+      {
+        name: "Growth",
+        price: "₹35,000/mo",
+        features: ["4 Platforms", "20 Posts/Month", "Reels/Stories", "Paid Ads Management"],
+      },
+      {
+        name: "Premium",
+        price: "₹65,000/mo",
+        features: [
+          "All Platforms",
+          "Daily Posts",
+          "Influencer Outreach",
+          "Dedicated Manager",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Which platforms should I be on?",
+        a: "It depends on your audience. We'll recommend the best platforms for you.",
+      },
+      {
+        q: "How often should I post?",
+        a: "We recommend 3-5 times per week for optimal engagement.",
+      },
+      {
+        q: "Do you create the content?",
+        a: "Yes, we handle everything from graphics to copywriting.",
+      },
+    ],
+    stats: { projects: "100+", clients: "80+", satisfaction: "98%" },
+    caseStudies: [
+      {
+        title: "Restaurant Chain",
+        result: "500% follower growth",
+        image: "/portfolio/project3.jpg",
+      },
+      {
+        title: "Fashion Brand",
+        result: "3M+ reach monthly",
+        image: "/portfolio/project4.jpg",
+      },
+    ],
+  },
+  "content-marketing": {
+    title: "Content Marketing",
+    tagline: "Engage your audience with compelling content that converts",
+    description:
+      "Content is king, and we help you create content that attracts, engages, and converts your target audience. From blog posts to videos, we cover all content formats to build your brand authority.",
+    image: "/services/content-marketing.jpg",
+    icon: "✍️",
+    color: "from-orange-500 to-orange-600",
+    features: [
+      {
+        title: "Content Strategy",
+        desc: "Comprehensive content roadmap",
+      },
+      {
+        title: "Blog Writing & Management",
+        desc: "SEO-optimized blog content",
+      },
+      {
+        title: "Copywriting",
+        desc: "Persuasive copy that converts",
+      },
+      {
+        title: "Video Content",
+        desc: "Engaging video production",
+      },
+      {
+        title: "Infographic Design",
+        desc: "Visual content that tells stories",
+      },
+      {
+        title: "E-books & Whitepapers",
+        desc: "Long-form content for lead generation",
+      },
+    ],
+    technologies: [
+      "WordPress",
+      "Canva",
+      "Grammarly",
+      "BuzzSumo",
+      "Jasper AI",
+      "Surfer SEO",
+      "Premiere Pro",
+      "Loom",
+    ],
+    process: [
+      { step: "Research", desc: "Audience and topic research" },
+      { step: "Planning", desc: "Content calendar development" },
+      { step: "Creation", desc: "Content writing and design" },
+      { step: "Optimization", desc: "SEO and readability optimization" },
+      { step: "Publishing", desc: "Strategic content distribution" },
+      { step: "Promotion", desc: "Content amplification" },
+    ],
+    pricing: [
+      {
+        name: "Blog Package",
+        price: "₹12,000/mo",
+        features: ["4 Blog Posts", "SEO Optimized", "Featured Images", "Social Sharing"],
+      },
+      {
+        name: "Content Suite",
+        price: "₹28,000/mo",
+        features: ["8 Blog Posts", "2 Infographics", "Email Newsletter", "Content Strategy"],
+      },
+      {
+        name: "Full Service",
+        price: "₹55,000/mo",
+        features: [
+          "Unlimited Blogs",
+          "Video Content",
+          "E-books",
+          "Complete Content Team",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How long should blog posts be?",
+        a: "We recommend 1,500-2,500 words for optimal SEO performance.",
+      },
+      {
+        q: "Do you handle content distribution?",
+        a: "Yes, we can manage publishing and promotion across channels.",
+      },
+      {
+        q: "Can you write for technical topics?",
+        a: "Yes, we have writers specialized in various industries.",
+      },
+    ],
+    stats: { projects: "90+", clients: "70+", satisfaction: "97%" },
+    caseStudies: [
+      {
+        title: "SaaS Company Blog",
+        result: "200% traffic increase",
+        image: "/portfolio/project5.jpg",
+      },
+      {
+        title: "Healthcare Content",
+        result: "50+ leads/month",
+        image: "/portfolio/project6.jpg",
+      },
+    ],
+  },
 };
 
+// Type definitions
+interface Feature {
+  title: string;
+  desc: string;
+}
+
+interface ProcessStep {
+  step: string;
+  desc: string;
+}
+
+interface PricingPlan {
+  name: string;
+  price: string;
+  features: string[];
+}
+
+interface FAQ {
+  q: string;
+  a: string;
+}
+
+interface CaseStudy {
+  title: string;
+  result: string;
+  image: string;
+}
+
+interface Stats {
+  projects: string;
+  clients: string;
+  satisfaction: string;
+}
+
+interface ServiceData {
+  title: string;
+  tagline: string;
+  description: string;
+  image: string;
+  icon: string;
+  color: string;
+  features: Feature[];
+  technologies: string[];
+  process: ProcessStep[];
+  pricing: PricingPlan[];
+  faqs: FAQ[];
+  stats: Stats;
+  caseStudies: CaseStudy[];
+}
+
+// Generate static params for all services
+export async function generateStaticParams() {
+  return Object.keys(servicesData).map((slug) => ({
+    slug: slug,
+  }));
+}
+
+// Generate metadata
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const service = servicesData[params.slug];
+  const { slug } = await params;
+  const service = servicesData[slug];
+  
+  if (!service) {
+    return {
+      title: "Service Not Found | Digitally Vibe",
+      description: "The requested service could not be found.",
+    };
+  }
+
   return {
-    title: `${service?.title || "Service"} | Digitally Vibe`,
-    description: service?.tagline || "Our digital services",
+    title: `${service.title} | Digitally Vibe`,
+    description: service.tagline,
   };
 }
 
-export default function ServiceDetailPage({
+// Page component
+export default async function ServiceDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const service = servicesData[params.slug];
+  const { slug } = await params;
+  const service = servicesData[slug];
 
   if (!service) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Service Not Found
-          </h1>
-          <Link href="/services" className="text-red-600 hover:underline">
-            View All Services
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   return (
@@ -236,7 +810,7 @@ export default function ServiceDetailPage({
                 {service.description}
               </p>
               <div className="space-y-4">
-                {service.features.slice(0, 4).map((feature: any, index: number) => (
+                {service.features.slice(0, 4).map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={20} />
                     <div>
@@ -247,13 +821,17 @@ export default function ServiceDetailPage({
                 ))}
               </div>
             </div>
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl bg-gray-200">
               <Image
                 src={service.image}
                 alt={service.title}
                 fill
                 className="object-cover"
               />
+              <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-60`}></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-8xl">{service.icon}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -272,7 +850,7 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {service.features.map((feature: any, index: number) => (
+            {service.features.map((feature, index) => (
               <div
                 key={index}
                 className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-red-200 hover:shadow-lg transition-all"
@@ -300,7 +878,7 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="flex flex-wrap justify-center gap-4">
-            {service.technologies.map((tech: string, index: number) => (
+            {service.technologies.map((tech, index) => (
               <span
                 key={index}
                 className="bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 px-6 py-3 rounded-full font-medium transition-colors"
@@ -325,7 +903,7 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {service.process.map((step: any, index: number) => (
+            {service.process.map((step, index) => (
               <div
                 key={index}
                 className="relative bg-white/5 p-6 rounded-2xl border border-white/10"
@@ -356,7 +934,7 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {service.pricing.map((plan: any, index: number) => (
+            {service.pricing.map((plan, index) => (
               <div
                 key={index}
                 className={`bg-white p-8 rounded-2xl border-2 transition-all ${
@@ -379,7 +957,7 @@ export default function ServiceDetailPage({
                   {plan.price}
                 </div>
                 <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature: string, i: number) => (
+                  {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2">
                       <CheckCircle size={16} className="text-green-500" />
                       <span className="text-gray-600 text-sm">{feature}</span>
@@ -412,13 +990,13 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {service.caseStudies.map((study: any, index: number) => (
+            {service.caseStudies.map((study, index) => (
               <Link
                 key={index}
                 href="/portfolio"
                 className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
               >
-                <div className="relative h-64">
+                <div className="relative h-64 bg-gray-200">
                   <Image
                     src={study.image}
                     alt={study.title}
@@ -461,7 +1039,7 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="space-y-4">
-            {service.faqs.map((faq: any, index: number) => (
+            {service.faqs.map((faq, index) => (
               <details
                 key={index}
                 className="group bg-white rounded-2xl border border-gray-100 overflow-hidden"
